@@ -12,14 +12,17 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     
+
 ->withMiddleware(function (Middleware $middleware): void {
+    // Trust Render's HTTPS proxy
+    $middleware->trustProxies(at: '*');
+
+    // Exclude payment webhooks from CSRF verification
     $middleware->validateCsrfTokens(except: [
-    'api/paystack/webhook',
-]);
-$middleware->validateCsrfTokens(except: [
-    'api/mpesa/callback',
-    'mpesa/callback',
-]);
+        'api/paystack/webhook',
+        'api/mpesa/callback',
+        'mpesa/callback',
+    ]);
 })
 
 
