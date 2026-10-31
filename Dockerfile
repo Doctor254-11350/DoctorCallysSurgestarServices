@@ -41,5 +41,6 @@ RUN chown -R www-data:www-data storage bootstrap/cache \
     && chmod -R 775 storage bootstrap/cache
 
 EXPOSE 10000
-
-CMD ["apache2-foreground"]
+RUN php artisan config:clear
+RUN php artisan cache:clear
+CMD php artisan migrate --force && apache2-foreground
